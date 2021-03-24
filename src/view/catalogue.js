@@ -46,11 +46,7 @@ export function Catalogue(props) {
       <div className="catalogue__info">
         {props.state.markup ? "" : <h3 className="catalogue__intro">Please choose your desserts!</h3>}
         <div className="catalogue__main">
-          <img
-            className="catalogue__main-preview"
-            style={!props.state.currentMenuItem.image ? {} : { objectFit: "cover" }}
-            src={!props.state.currentMenuItem.image ? cakePreview : props.state.currentMenuItem.image}
-            alt="cake preview"></img>
+          <img className="catalogue__main-preview" style={!props.state.currentMenuItem.image ? {} : { objectFit: "cover" }} src={!props.state.currentMenuItem.image ? cakePreview : props.state.currentMenuItem.image} alt="cake preview"></img>
           <h3 className="catalogue__main-name">{!props.state.currentMenuItem.title ? "Select your cake!" : props.state.currentMenuItem.title}</h3>
           <a
             className="link catalogue__main-order"

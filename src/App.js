@@ -3,6 +3,9 @@ import { AiOutlineShoppingCart, AiFillCreditCard, AiOutlineSearch, AiOutlineHear
 import { BiCake, BiTrash } from "react-icons/bi";
 import { useEffect, useState } from "react";
 
+//Router
+import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
+
 //Modules
 import Search from "./view/search";
 import Pay from "./view/pay";
@@ -22,52 +25,54 @@ function App(props) {
   }, [props.cart]);
 
   return (
-    <div className="app">
-      <section className="menu">
-        <h1 className="menu__header">
-          <span>Golden</span> Rose
-        </h1>
-        <nav className="nav">
-          <a
-            href="#"
-            className="nav__item item-cart link"
-            onClick={async (e) => {
-              props.pageChanger(1);
-            }}>
-            <AiOutlineShoppingCart />
-            <div className="item-cart-num" style={cartItemsNum ? { display: "block" } : { display: "none" }}>
-              {cartItemsNum ? cartItemsNum : ""}
-            </div>
-          </a>
-          {props.currentPage === 2 ? (
-            <a href="#" className="nav__item item-card link">
-              <AiFillCreditCard onClick={() => props.pageChanger(2)} />
-            </a>
+    <Router>
+      <div className="app">
+        <section className="menu">
+          <h1 className="menu__header">
+            <span>Golden</span> Rose
+          </h1>
+          <nav className="nav">
+            <Link
+              to="cart"
+              className="nav__item item-cart link"
+              onClick={async (e) => {
+                props.pageChanger(1);
+              }}>
+              <AiOutlineShoppingCart />
+              <div className="item-cart-num" style={cartItemsNum ? { display: "block" } : { display: "none" }}>
+                {cartItemsNum ? cartItemsNum : ""}
+              </div>
+            </Link>
+            {props.currentPage === 2 ? (
+              <Link to="pay" className="nav__item item-card link">
+                <AiFillCreditCard onClick={() => props.pageChanger(2)} />
+              </Link>
+            ) : (
+              ""
+            )}
+            <Link to="catalogue" className="nav__item item-catalogue link" onClick={() => props.pageChanger(4)}>
+              <BiCake />
+            </Link>
+            <Link to="search" className="nav__item item-search link" onClick={() => props.pageChanger(3)}>
+              <AiOutlineSearch />
+            </Link>
+          </nav>
+        </section>
+        <section className="main">
+          {props.currentPage === 1 ? (
+            <Cart state={props} bin={<BiTrash />} />
+          ) : props.currentPage === 2 ? (
+            <Pay state={props} />
+          ) : props.currentPage === 3 ? (
+            <Search state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
+          ) : props.currentPage === 4 ? (
+            <Catalogue state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
           ) : (
             ""
           )}
-          <a href="#" className="nav__item item-catalogue link" onClick={() => props.pageChanger(4)}>
-            <BiCake />
-          </a>
-          <a href="#" className="nav__item item-search link" onClick={() => props.pageChanger(3)}>
-            <AiOutlineSearch />
-          </a>
-        </nav>
-      </section>
-      <section className="main">
-        {props.currentPage === 1 ? (
-          <Cart state={props} bin={<BiTrash />} />
-        ) : props.currentPage === 2 ? (
-          <Pay state={props} />
-        ) : props.currentPage === 3 ? (
-          <Search state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
-        ) : props.currentPage === 4 ? (
-          <Catalogue state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
-        ) : (
-          ""
-        )}
-      </section>
-    </div>
+        </section>
+      </div>
+    </Router>
   );
 }
 

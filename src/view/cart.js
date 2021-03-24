@@ -45,11 +45,6 @@ function Cart(props) {
     props.state.anyMarkup([markupOrder, markupPayment]);
   }, [props.state.favouriteCakes, props.state.cart]);
 
-  function date() {
-    const date = new Date();
-    return date.getDay();
-  }
-
   return (
     <section className="cart">
       <div className="cart__favorites">
@@ -78,30 +73,7 @@ function Cart(props) {
             </div>
           )}
         </div>
-        <div className="cart__favorites__footer">
-          <h3 className="cart__favorites__footer-header">Delivered on:</h3>
-          <a data-day="Mon" href="#" className="cart__favorites__footer-mon link">
-            Mon <span>{date()}</span>
-          </a>
-          <a data-day="Tue" href="#" className="cart__favorites__footer-tue link">
-            Tue <span>{date() + 1}</span>
-          </a>
-          <a data-day="Wed" href="#" className="cart__favorites__footer-wed link">
-            Wed <span>{date() + 3}</span>
-          </a>
-          <a data-day="Thu" href="#" className="cart__favorites__footer-thu link ">
-            Thu <span>{date() + 4}</span>
-          </a>
-          <a data-day="Fri" href="#" className="cart__favorites__footer-fri link">
-            Fri <span>{date() + 5}</span>
-          </a>
-          <a data-day="Sat" href="#" className="cart__favorites__footer-sat link">
-            Sat <span>{date() + 6}</span>
-          </a>
-          <a data-day="Sun" href="#" className="cart__favorites__footer-sun link">
-            Sun <span>{date() + 7}</span>
-          </a>
-        </div>
+        {<RenderDays />}
       </div>
       <div className="cart__list">
         <h2 className="cart__list-header">Cart</h2>
@@ -126,3 +98,37 @@ function Cart(props) {
 }
 
 export default Cart;
+
+const RenderDays = (props) => {
+  function date() {
+    const date = new Date();
+    return date.getDay();
+  }
+
+  return (
+    <div className="cart__favorites__footer">
+      <h3 className="cart__favorites__footer-header">Delivered on:</h3>
+      <a data-day="Mon" href="#" className="cart__favorites__footer-mon link">
+        Mon <span>{date()}</span>
+      </a>
+      <a data-day="Tue" href="#" className="cart__favorites__footer-tue link">
+        Tue <span>{date() + 1}</span>
+      </a>
+      <a data-day="Wed" href="#" className="cart__favorites__footer-wed link">
+        Wed <span>{date() + 3}</span>
+      </a>
+      <a data-day="Thu" href="#" className="cart__favorites__footer-thu link ">
+        Thu <span>{date() + 4}</span>
+      </a>
+      <a data-day="Fri" href="#" className="cart__favorites__footer-fri link">
+        Fri <span>{date() + 5}</span>
+      </a>
+      <a data-day="Sat" href="#" className="cart__favorites__footer-sat link">
+        Sat <span>{date() + 6}</span>
+      </a>
+      <a data-day="Sun" href="#" className="cart__favorites__footer-sun link">
+        Sun <span>{date() + 7}</span>
+      </a>
+    </div>
+  );
+};
