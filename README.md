@@ -1,5 +1,14 @@
 # Golden Rose App - in process, currently updating my API and will add soon, then refactor
 
+some update
+
+blablaasda
+
+blablabla
+
+
+sasasasas
+
 ## npm run server - otherwise no pictures will show
 
 At the moment still has API from mealmaker, new API coming (will be very simple).
@@ -12,7 +21,7 @@ Used:
 2. Redux
 3. Custom API (currently being updated, so old API inserted).
 
-https://elegant-lumiere-7bbabc.netlify.app/#
+https://elegant-lumiere-7bbabc.netlify.app/# --- only for outline design, as server with data isn't yet hosted, I will upload heroku later
 
 ### It has 4 pages, but payment page will open once you put something in cart and press order now
 
