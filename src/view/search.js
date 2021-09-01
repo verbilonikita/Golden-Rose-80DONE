@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { markup } from "../redux/actions";
 import { Menu, RenderMenu } from "./menu";
+import * as ACTIONS from '../redux/actions';
+import { connect } from "react-redux";
 
 //Main Screen
 function Search(props) {
@@ -9,15 +11,15 @@ function Search(props) {
 
   useEffect(() => {
     if (markupSearch) setMenu(props.state.request);
-  }, [props.state.favouriteCakes]);
+  }, [props.favouriteCakes]);
 
   //Set Menu
 
   async function setMenu(value) {
     try {
-      props.state.currentRequest(value);
+      props.currentRequest(value);
       const data = await Menu(value);
-      props.state.setMenuRecipes(data);
+      props.setMenuRecipes(data);
       const markup = await RenderMenu(data, props);
       setMarkupSearch(markup);
       setError("");
@@ -47,8 +49,6 @@ function Search(props) {
   );
 }
 
-export default Search;
-
 // Initial Screen onload
 function Initial() {
   return (
@@ -73,3 +73,31 @@ function Error(state) {
 function Item(props) {
   return <section className="search__preview">{props.searchItems ? props.searchItems.map((el) => el) : ""}</section>;
 }
+
+
+//Redux
+function mapStateToProps(state) {
+  return {
+    ...state,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentRequest: (type) => dispatch(ACTIONS.request(type)),
+    pageChanger: (page) => dispatch(ACTIONS.pageChanger(page)),
+    setMenuRecipes: (query) => dispatch(ACTIONS.setMenu(query)),
+    setMenuItem: (item) => dispatch(ACTIONS.currentMenuItem(item)),
+    addBookmark: (item) => dispatch(ACTIONS.addBookmark(item)),
+    addToCart: (items) => dispatch(ACTIONS.addToCart(items)),
+    updateBookmark: (item) => dispatch(ACTIONS.updateBookmark(item)),
+    updateCart: (item) => dispatch(ACTIONS.updateCart(item)),
+    addIngredients: (num) => dispatch(ACTIONS.addIngredients(num)),
+    anyMarkup: (markup) => dispatch(ACTIONS.markup(markup)),
+    clearMarkup: () => dispatch(ACTIONS.clearMarkup()),
+    clearBookmark: () => dispatch(ACTIONS.clearBookmark()),
+    randomRecipe: (item) => dispatch(ACTIONS.randomRecipe(item)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -1,3 +1,6 @@
+import * as ACTIONS from '../redux/actions';
+import { connect } from "react-redux";
+
 // Fetch Data and Return array of Recipes
 
 export async function Menu(query) {
@@ -37,15 +40,15 @@ function createMarkup(recipe, props) {
           className="catalogue__item__info-like"
           onClick={(e) => {
             e.stopPropagation();
-            if (props.state.favouriteCakes.some((el) => el.title === recipe.title)) {
-              const newBookmarks = props.state.favouriteCakes.filter((el) => el.title !== recipe.title);
-              props.state.updateBookmark(newBookmarks);
+            if (props.favouriteCakes.some((el) => el.title === recipe.title)) {
+              const newBookmarks = props.favouriteCakes.filter((el) => el.title !== recipe.title);
+              props.updateBookmark(newBookmarks);
             } else {
               const currentRecipe = eventsForItems(recipe, props, true);
-              props.state.addBookmark(currentRecipe);
+              props.addBookmark(currentRecipe);
             }
           }}>
-          {props.state.favouriteCakes.some((el) => el.title === recipe.title) ? props.heartFill : props.heartEmpty}
+          {props.favouriteCakes.some((el) => el.title === recipe.title) ? props.heartFill : props.heartEmpty}
         </a>
       </div>
     </div>
@@ -63,7 +66,37 @@ function eventsForItems(recipe, props, trueFalse) {
     bookmarked: trueFalse,
     price: recipe.price,
   };
-  props.state.setMenuItem(currentRecipe);
+  props.setMenuItem(currentRecipe);
 
   return currentRecipe;
 }
+
+
+
+//Redux
+function mapStateToProps(state) {
+  return {
+    ...state,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentRequest: (type) => dispatch(ACTIONS.request(type)),
+    pageChanger: (page) => dispatch(ACTIONS.pageChanger(page)),
+    setMenuRecipes: (query) => dispatch(ACTIONS.setMenu(query)),
+    setMenuItem: (item) => dispatch(ACTIONS.currentMenuItem(item)),
+    addBookmark: (item) => dispatch(ACTIONS.addBookmark(item)),
+    addToCart: (items) => dispatch(ACTIONS.addToCart(items)),
+    updateBookmark: (item) => dispatch(ACTIONS.updateBookmark(item)),
+    updateCart: (item) => dispatch(ACTIONS.updateCart(item)),
+    addIngredients: (num) => dispatch(ACTIONS.addIngredients(num)),
+    anyMarkup: (markup) => dispatch(ACTIONS.markup(markup)),
+    clearMarkup: () => dispatch(ACTIONS.clearMarkup()),
+    clearBookmark: () => dispatch(ACTIONS.clearBookmark()),
+    randomRecipe: (item) => dispatch(ACTIONS.randomRecipe(item)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);
+

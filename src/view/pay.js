@@ -1,3 +1,6 @@
+import * as ACTIONS from '../redux/actions';
+import { connect } from "react-redux";
+
 function Pay(props) {
   return (
     <section className="pay">
@@ -28,7 +31,7 @@ function Pay(props) {
           <p>Delivery charge: £5 within town, £10 outside town.</p>
           <h4>
             Total:{" will be updated later"}
-            <span className="price">{/* {props.state.markup[1].length > 0 ? getPrice() : "£0.0"} */}</span>
+            <span className="price">{/* {props.markup[1].length > 0 ? getPrice() : "£0.0"} */}</span>
           </h4>
           <button type="submit" className="form-order link" href="#">
             Order now!
@@ -39,14 +42,14 @@ function Pay(props) {
         <h2 className="cart__list-header">Cart</h2>
         <div className="cart__list-finalise">
           <h3>Order</h3>
-          <div className="cart__list-finalise-container">{props.state.markup.length === 2 ? props.state.markup[1] : ""}</div>
+          <div className="cart__list-finalise-container">{props.markup.length === 2 ? props.markup[1] : ""}</div>
         </div>
         <div className="cart__order">
           <a
             className="cart__order-button link"
             href="#"
             onClick={() => {
-              props.state.pageChanger(2);
+              props.pageChanger(2);
             }}>
             Order Now
           </a>
@@ -57,4 +60,29 @@ function Pay(props) {
   );
 }
 
-export default Pay;
+//Redux
+function mapStateToProps(state) {
+  return {
+    ...state,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentRequest: (type) => dispatch(ACTIONS.request(type)),
+    pageChanger: (page) => dispatch(ACTIONS.pageChanger(page)),
+    setMenuRecipes: (query) => dispatch(ACTIONS.setMenu(query)),
+    setMenuItem: (item) => dispatch(ACTIONS.currentMenuItem(item)),
+    addBookmark: (item) => dispatch(ACTIONS.addBookmark(item)),
+    addToCart: (items) => dispatch(ACTIONS.addToCart(items)),
+    updateBookmark: (item) => dispatch(ACTIONS.updateBookmark(item)),
+    updateCart: (item) => dispatch(ACTIONS.updateCart(item)),
+    addIngredients: (num) => dispatch(ACTIONS.addIngredients(num)),
+    anyMarkup: (markup) => dispatch(ACTIONS.markup(markup)),
+    clearMarkup: () => dispatch(ACTIONS.clearMarkup()),
+    clearBookmark: () => dispatch(ACTIONS.clearBookmark()),
+    randomRecipe: (item) => dispatch(ACTIONS.randomRecipe(item)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Pay);

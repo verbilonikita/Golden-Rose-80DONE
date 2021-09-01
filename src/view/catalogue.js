@@ -1,22 +1,25 @@
 import React, { useEffect } from "react";
 import { Menu, RenderMenu } from "./menu";
 import cakePreview from "../img/cake.png";
+import * as ACTIONS from '../redux/actions';
+import { connect } from "react-redux";
 
-export function Catalogue(props) {
+
+function Catalogue(props) {
   useEffect(() => {
-    if (props.state.request) {
-      setMenu(props.state.request);
+    if (props.request) {
+      setMenu(props.request);
     }
-  }, [props.state.favouriteCakes]);
+  }, [props.favouriteCakes]);
 
   async function setMenu(type) {
     try {
       const data = await Menu(type);
       if (!data) throw new Error("Couldn't connect to the server");
-      props.state.setMenuRecipes(data);
+      props.setMenuRecipes(data);
       const markup = await RenderMenu(data, props);
-      props.state.currentRequest(type);
-      props.state.anyMarkup(markup);
+      props.currentRequest(type);
+      props.anyMarkup(markup);
     } catch (err) {
       console.error(err);
     }
@@ -44,18 +47,18 @@ export function Catalogue(props) {
         </nav>
       </div>
       <div className="catalogue__info">
-        {props.state.markup ? "" : <h3 className="catalogue__intro">Please choose your desserts!</h3>}
+        {props.markup ? "" : <h3 className="catalogue__intro">Please choose your desserts!</h3>}
         <div className="catalogue__main">
-          <img className="catalogue__main-preview" style={!props.state.currentMenuItem.image ? {} : { objectFit: "cover" }} src={!props.state.currentMenuItem.image ? cakePreview : props.state.currentMenuItem.image} alt="cake preview"></img>
-          <h3 className="catalogue__main-name">{!props.state.currentMenuItem.title ? "Select your cake!" : props.state.currentMenuItem.title}</h3>
+          <img className="catalogue__main-preview" style={!props.currentMenuItem.image ? {} : { objectFit: "cover" }} src={!props.currentMenuItem.image ? cakePreview : props.currentMenuItem.image} alt="cake preview"></img>
+          <h3 className="catalogue__main-name">{!props.currentMenuItem.title ? "Select your cake!" : props.currentMenuItem.title}</h3>
           <a
             className="link catalogue__main-order"
             onClick={() => {
-              if (props.state.cart.some((el) => el.title === props.state.currentMenuItem.title)) {
+              if (props.cart.some((el) => el.title === props.currentMenuItem.title)) {
                 return;
               }
-              if (props.state.cart.length >= 0) {
-                props.state.addToCart(props.state.currentMenuItem);
+              if (props.cart.length >= 0) {
+                props.addToCart(props.currentMenuItem);
               }
             }}>
             Add To Cart
@@ -71,7 +74,7 @@ export function Catalogue(props) {
             <p>Additional Info</p>
             {props.iconInfo}
             <div className="catalogue__main-info__popup hidden">
-              <h4 className="catalogue__main-info__popup-head">{props.state.currentMenuItem ? props.state.currentMenuItem.title : "My Cake"}</h4>
+              <h4 className="catalogue__main-info__popup-head">{props.currentMenuItem ? props.currentMenuItem.title : "My Cake"}</h4>
               <p className="catalogue__main-info__popup-ing">
                 bla bla bla bla bla
                 <br />
@@ -80,8 +83,37 @@ export function Catalogue(props) {
             </div>
           </div>
         </div>
-        <div className="catalogue__menu">{props.state.markup ? props.state.markup.map((el) => el) : ""}</div>
+        <div className="catalogue__menu">{props.markup ? props.markup.map((el) => el) : ""}</div>
       </div>
     </section>
   );
 }
+
+
+
+//Redux
+function mapStateToProps(state) {
+  return {
+    ...state,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    currentRequest: (type) => dispatch(ACTIONS.request(type)),
+    pageChanger: (page) => dispatch(ACTIONS.pageChanger(page)),
+    setMenuRecipes: (query) => dispatch(ACTIONS.setMenu(query)),
+    setMenuItem: (item) => dispatch(ACTIONS.currentMenuItem(item)),
+    addBookmark: (item) => dispatch(ACTIONS.addBookmark(item)),
+    addToCart: (items) => dispatch(ACTIONS.addToCart(items)),
+    updateBookmark: (item) => dispatch(ACTIONS.updateBookmark(item)),
+    updateCart: (item) => dispatch(ACTIONS.updateCart(item)),
+    addIngredients: (num) => dispatch(ACTIONS.addIngredients(num)),
+    anyMarkup: (markup) => dispatch(ACTIONS.markup(markup)),
+    clearMarkup: () => dispatch(ACTIONS.clearMarkup()),
+    clearBookmark: () => dispatch(ACTIONS.clearBookmark()),
+    randomRecipe: (item) => dispatch(ACTIONS.randomRecipe(item)),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Catalogue);

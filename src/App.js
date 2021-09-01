@@ -10,7 +10,7 @@ import { BrowserRouter as Router, Route, Switch, Link } from "react-router-dom";
 import Search from "./view/search";
 import Pay from "./view/pay";
 import Cart from "./view/cart";
-import { Catalogue } from "./view/catalogue";
+import Catalogue from "./view/catalogue";
 import * as effectHooks from "./controller/effectHooks";
 
 //Redux
@@ -60,13 +60,13 @@ function App(props) {
         </section>
         <section className="main">
           {props.currentPage === 1 ? (
-            <Cart state={props} bin={<BiTrash />} />
+            <Cart bin={<BiTrash />} />
           ) : props.currentPage === 2 ? (
-            <Pay state={props} />
+            <Pay />
           ) : props.currentPage === 3 ? (
-            <Search state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
+            <Search heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
           ) : props.currentPage === 4 ? (
-            <Catalogue state={props} heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
+            <Catalogue heartEmpty={<AiOutlineHeart />} heartFill={<AiFillHeart />} iconInfo={<AiOutlineInfoCircle />} />
           ) : (
             ""
           )}

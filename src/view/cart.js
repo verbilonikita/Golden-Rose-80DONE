@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from "react";
+import * as ACTIONS from '../redux/actions';
+import { connect } from "react-redux";
+
 
 function Cart(props) {
   useEffect(() => {
-    const markupOrder = props.state.favouriteCakes.map((el) => {
+    const markupOrder = props.favouriteCakes.map((el) => {
       return (
         <a
           href="#"
           className="cart__favorites__box-item link"
           key={el.title}
           onClick={() => {
-            props.state.addIngredients(1);
+            props.addIngredients(1);
           }}>
           <div className="cart__favorites__box-item__info">
             <p className="cart__favorites__box-item-name">{el.title}</p>
@@ -21,7 +24,7 @@ function Cart(props) {
       );
     });
 
-    const markupPayment = props.state.cart.map((el) => {
+    const markupPayment = props.cart.map((el) => {
       return (
         <a className="cart__list-finalise__item link" data-title={el.title} key={el.title}>
           <img className="cart__list-finalise-img" src={el.image}></img>
@@ -31,10 +34,10 @@ function Cart(props) {
             className="cart__list-finalise-bin"
             onClick={(e) => {
               const myEl = e.target.closest(".link");
-              const newFavourites = props.state.cart.filter((el) => {
+              const newFavourites = props.cart.filter((el) => {
                 return el.title !== myEl.dataset.title;
               });
-              props.state.updateCart(newFavourites);
+              props.updateCart(newFavourites);
             }}>
             {props.bin}
           </p>
@@ -42,8 +45,8 @@ function Cart(props) {
       );
     });
 
-    props.state.anyMarkup([markupOrder, markupPayment]);
-  }, [props.state.favouriteCakes, props.state.cart]);
+    props.anyMarkup([markupOrder, markupPayment]);
+  }, [props.favouriteCakes, props.cart]);
 
   return (
     <section className="cart">
@@ -53,9 +56,9 @@ function Cart(props) {
           <p className="cart__favorites__head-info">payment and delivery</p>
           <p className="cart__favorites__head-features">Featured</p>
         </div>
-        <div className="cart__favorites__box">{props.state.markup ? props.state.markup[0] : ""}</div>
+        <div className="cart__favorites__box">{props.markup ? props.markup[0] : ""}</div>
         <div className="cart__favorites__ings">
-          {props.state.currentIngs === 0 ? (
+          {props.currentIngs === 0 ? (
             ""
           ) : (
             <div className="cart__favorites__ings-grid">
@@ -79,14 +82,14 @@ function Cart(props) {
         <h2 className="cart__list-header">Cart</h2>
         <div className="cart__list-finalise">
           <h3>Order</h3>
-          <div className="cart__list-finalise-container">{props.state.markup ? props.state.markup[1] : ""}</div>
+          <div className="cart__list-finalise-container">{props.markup ? props.markup[1] : ""}</div>
         </div>
         <div className="cart__order">
           <a
             className="cart__order-button link"
             href="#"
             onClick={() => {
-              props.state.pageChanger(2);
+              props.pageChanger(2);
             }}>
             Order Now
           </a>
@@ -97,9 +100,7 @@ function Cart(props) {
   );
 }
 
-export default Cart;
-
-const RenderDays = (props) => {
+const RenderDays = () => {
   function date() {
     const date = new Date();
     return date.getDay();
@@ -132,3 +133,22 @@ const RenderDays = (props) => {
     </div>
   );
 };
+
+//Redux
+function mapStateToProps(state) {
+  return {
+    ...state,
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  return {
+    pageChanger: (page) => dispatch(ACTIONS.pageChanger(page)),
+    updateCart: (item) => dispatch(ACTIONS.updateCart(item)),
+    addIngredients: (num) => dispatch(ACTIONS.addIngredients(num)),
+    anyMarkup: (markup) => dispatch(ACTIONS.markup(markup)),
+    clearMarkup: () => dispatch(ACTIONS.clearMarkup()),
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Cart);

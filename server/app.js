@@ -3,6 +3,7 @@ const app = express();
 const mongoose = require("mongoose");
 const fs = require("fs");
 const path = require("path");
+const cors = require("cors");
 
 const DB = "mongodb+srv://Nikita:ff47TuRvrrhfAksQ@cluster0.ozrmq.mongodb.net/golden-rose?retryWrites=true&w=majority";
 
@@ -18,6 +19,8 @@ mongoose
 express.json();
 
 const Menu = require("./menuSchema");
+
+app.use(cors());
 
 app.get("/api/:type", async (req, res) => {
   try {

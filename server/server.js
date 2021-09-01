@@ -1,7 +1,7 @@
 const dotenv = require("dotenv");
 const app = require("./app.js");
 
-app.listen(8080, () => {
+app.listen(3000, () => {
   console.log("server is running");
 });
 
