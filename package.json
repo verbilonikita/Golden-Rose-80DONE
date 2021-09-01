@@ -29,7 +29,6 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "compile-sass": "node-sass ./sass/main.scss index.css -w",
     "heroku-postbuild": "npm run server && npm run build"
   },
   "eslintConfig": {
