@@ -2,10 +2,6 @@
 
 https://golden-rose.herokuapp.com/
 
-## npm run server - otherwise no pictures will show
-
-At the moment still has API from mealmaker, new API coming (will be very simple).
-
 ### On search page type "CAKE" || "DONUTS" || "CHOCOLATE"
 
 Used:
