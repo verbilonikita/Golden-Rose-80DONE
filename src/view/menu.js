@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 
 export async function Menu(query) {
   try {
-    const fetched = await fetch(`api/${query}`);
+    const fetched = await fetch(`https://golden-rose-server.herokuapp.com/api/${query}`);
     if (!fetched.ok) throw new Error("failed to find a recipe try again");
     const { data } = await fetched.json();
     return data;
